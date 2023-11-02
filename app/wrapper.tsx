@@ -126,7 +126,7 @@ export default function WeblnNostrWrapper({
         <ModeToggle />
       </NostrNdkContext.Provider>
 
-      <form action={setNpub} onSubmit={(e) => e.preventDefault()} ref={formRef}>
+      <form action={setNpub} ref={formRef}>
         <input type="hidden" name="npub" value={windowNostrPubkey || ""} />
       </form>
     </ThemeProvider>

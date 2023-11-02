@@ -3,6 +3,11 @@ import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
+export const metadata = {
+  title: "Icarus",
+  description: "Bitcoin email burner",
+};
+
 export default function RootLayout({
   children,
 }: {

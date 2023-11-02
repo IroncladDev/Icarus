@@ -6,23 +6,15 @@ import CreateEmail from "./email/create";
 import EmailInbox from "./email/inbox";
 import { mailslurp } from "./email/route";
 
-export const metadata = {
-  title: "Icarus",
-  description: "Bitcoin email burner",
-};
-
 export default async function Index() {
   const npub = cookies().get("npub");
 
-  if (!npub?.value) {
-    return null;
-  }
-
   let inbox: InboxDto | undefined | null;
 
-  inbox = await kv.get("email-" + npub.value);
+  inbox = npub ? await kv.get("email-" + npub.value) : undefined;
 
   if (
+    npub &&
     inbox &&
     inbox.expiresAt &&
     Date.now() >= new Date(inbox.expiresAt).getTime()
@@ -31,14 +23,14 @@ export default async function Index() {
     await kv.set("email-" + npub.value, "");
     inbox = undefined;
   }
-  
+
   return (
     <WeblnNostrWrapper>
-      <div className="flex flex-row justify-center grow">
+      {npub ? <div className="flex flex-row justify-center grow">
         <div className="flex flex-col gap-4 max-w-sm grow justify-center">
           {inbox ? <EmailInbox inbox={inbox} /> : <CreateEmail />}
         </div>
-      </div>
+      </div> : null}
     </WeblnNostrWrapper>
   );
 }
