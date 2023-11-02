@@ -1,30 +1,44 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import WeblnNostrWrapper from "./wrapper";
 import { kv } from "@vercel/kv";
-import { Button } from "@/components/ui/button";
+import { InboxDto } from "mailslurp-client";
+import { cookies } from "next/headers";
+import CreateEmail from "./email/create";
+import EmailInbox from "./email/inbox";
+import { mailslurp } from "./email/route";
 
-export default function Index() {
-  return <WeblnNostrWrapper>
-    <div className="flex flex-row justify-center">
-      <div className="flex flex-col gap-4 max-w-sm grow">
-        <span className="text-xl italic font-italic text-muted-foreground grow text-center">Bitcoin for Burners</span>
+export const metadata = {
+  title: "Icarus",
+  description: "Bitcoin email burner",
+};
 
-        <Tabs defaultValue="phone" className="grow w-full">
-          <TabsList className="w-full">
-            <TabsTrigger value="phone" className="grow basis-0">Phone</TabsTrigger>
-            <TabsTrigger value="email" className="grow basis-0">Email</TabsTrigger>
-          </TabsList>
-          <TabsContent value="phone">
-            <Button onClick={async () => {
-              "use server";
-              await kv.set("user_1_session", "session_token_value");
-              const session = await kv.get("user_1_session");
-              console.log(session);
-            }}>Click</Button>
-          </TabsContent>
-          <TabsContent value="email">Change your password here.</TabsContent>
-        </Tabs>
+export default async function Index() {
+  const npub = cookies().get("npub");
+
+  if (!npub?.value) {
+    return null;
+  }
+
+  let inbox: InboxDto | undefined | null;
+
+  inbox = await kv.get("email-" + npub.value);
+
+  if (
+    inbox &&
+    inbox.expiresAt &&
+    Date.now() >= new Date(inbox.expiresAt).getTime()
+  ) {
+    mailslurp.deleteInbox(inbox.id);
+    await kv.set("email-" + npub.value, "");
+    inbox = undefined;
+  }
+  
+  return (
+    <WeblnNostrWrapper>
+      <div className="flex flex-row justify-center grow">
+        <div className="flex flex-col gap-4 max-w-sm grow justify-center">
+          {inbox ? <EmailInbox inbox={inbox} /> : <CreateEmail />}
+        </div>
       </div>
-    </div>
-  </WeblnNostrWrapper>;
+    </WeblnNostrWrapper>
+  );
 }

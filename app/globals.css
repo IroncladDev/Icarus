@@ -74,3 +74,15 @@
     @apply bg-background text-foreground;
   }
 }
+
+.markup {
+  @apply flex flex-col gap-2 text-sm text-foreground;
+}
+
+.markup a {
+  @apply underline text-muted-foreground decoration-foreground;
+}
+
+.markup blockquote {
+  @apply border-l-2 border-border pl-2;
+}

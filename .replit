@@ -1,6 +1,6 @@
 run = "npm run dev"
 modules = ["nodejs-18:v3-20230608-f4cd419"]
-hidden = [".config", "package-lock.json", ".next", ".eslintrc.json", ".gitignore", "*.d.ts", "next.config.js", "postcss.config.js", "tailwind.config.*", "tsconfig.json", "components.json"]
+hidden = [".config", "package-lock.json", ".next", ".eslintrc.json", ".gitignore", "*.d.ts", "next.config.js", "postcss.config.js", "tailwind.config.*", "tsconfig.json", "components.json", ".vercel", "pnpm-lock.yaml"]
 
 disableInstallBeforeRun = true
 disableGuessImports = true
@@ -9,7 +9,7 @@ disableGuessImports = true
 channel = "stable-23_05"
 
 [deployment]
-run = ["sh", "-c", "yarn start"]
+run="pnpm start"
 deploymentTarget = "cloudrun"
 ignorePorts = false
-build = ["sh", "-c", "yarn build"]
+build = "pnpm build"
