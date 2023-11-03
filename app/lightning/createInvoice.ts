@@ -1,5 +1,3 @@
-import { getTokens, refreshTokens } from "./token";
-
 interface CreateInvoiceResponse {
   amount: number;
   boostagram?: null;
@@ -40,20 +38,17 @@ interface CreateInvoiceArgs {
   payer_pubkey?: string;
 }
 
+if(!process.env.ALBY_ACCESS_TOKEN) {
+  throw new Error("ALBY_ACCESS_TOKEN is not set");
+}
+
 export default async function createInvoice(
   args: CreateInvoiceArgs,
-  retry?: boolean,
 ): Promise<CreateInvoiceResponse> {
-  if (retry) {
-    await refreshTokens();
-  }
-
-  const { accessToken } = await getTokens();
-
   const res = await fetch("https://api.getalby.com/invoices", {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${process.env.ALBY_ACCESS_TOKEN}`,
       "Content-Type": "application/json",
       Accept: "application/json",
     },
@@ -62,7 +57,7 @@ export default async function createInvoice(
 
   if (res.error) {
     console.log("Error", res.error);
-    return createInvoice(args, true);
+    throw new Error("Error creating invoice")
   }
 
   return res;
