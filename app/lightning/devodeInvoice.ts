@@ -52,6 +52,7 @@ export default function decodeInvoice(paymentRequest: string): {
           throw new Error("Invalid invoice description");
         }
       } catch (err) {
+        console.log(err);
         throw new Error("Invalid invoice description");
       }
     } else {

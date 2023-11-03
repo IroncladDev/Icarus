@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -11,7 +12,6 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import { useState } from "react";
 import { options } from "./constants";
-import { Label } from "@/components/ui/label";
 
 // 1. Create invoice
 // | hash npub, duration into invoice
@@ -47,8 +47,8 @@ export default function CreateEmail() {
       toast({
         title: "Error",
         description: res.message,
-        duration: 1500
-      })
+        duration: 1500,
+      });
     }
   };
 
@@ -72,8 +72,8 @@ export default function CreateEmail() {
           await window.webln.sendPayment(res.pr);
           await createEmail(res.pr);
         } catch (err) {
-          setLoading(false);
           console.log(err);
+          setLoading(false);
           toast({
             title: "Error",
             description: (err as any).message,
@@ -95,7 +95,9 @@ export default function CreateEmail() {
       </div>
       <div className="flex flex-col gap-2">
         <Label htmlFor="duration">Duration</Label>
-        <p className="text-xs text-muted-foreground">Emails only last for a temporary period of time</p>
+        <p className="text-xs text-muted-foreground">
+          Emails only last for a temporary period of time
+        </p>
         <Select
           name="duration"
           value={duration}
@@ -110,14 +112,18 @@ export default function CreateEmail() {
                 <div className="flex gap-2 items-center w-full">
                   <span>{value.label}</span>
                   <span>-</span>
-                  <span className="text-muted-foreground text-xs">{value.price} sats</span>
+                  <span className="text-muted-foreground text-xs">
+                    {value.price} sats
+                  </span>
                 </div>
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
       </div>
-      <Button onClick={prepayInvoice} disabled={loading}>Create</Button>
+      <Button onClick={prepayInvoice} disabled={loading}>
+        Create
+      </Button>
     </div>
   );
 }

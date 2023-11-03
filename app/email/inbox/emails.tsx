@@ -196,10 +196,18 @@ export default function InboxEmails({ inbox }: { inbox: InboxDto }) {
           <Email refetch={refetchEmails} email={email} inbox={inbox} key={i} />
         ))}
 
-        {!loading && emails.length === 0 ? <div className="p-4 flex flex-col gap-2 items-center">
-          <span className="font-semibold text-lg">There&apos;s nothing here</span>
-          <span className="text-muted-foreground text-sm text-center">When you receive mail,<br/>it will appear here</span>
-        </div> : null}
+        {!loading && emails.length === 0 ? (
+          <div className="p-4 flex flex-col gap-2 items-center">
+            <span className="font-semibold text-lg">
+              There&apos;s nothing here
+            </span>
+            <span className="text-muted-foreground text-sm text-center">
+              When you receive mail,
+              <br />
+              it will appear here
+            </span>
+          </div>
+        ) : null}
       </div>
     </div>
   );

@@ -23,14 +23,22 @@ export async function GET(request: Request) {
     });
   }
 
-  const email = await mailslurp.getEmail(emailId);
+  try {
+    const email = await mailslurp.getEmail(emailId);
 
-  if (email) {
-    return Response.json({
-      success: true,
-      data: email,
-    });
-  } else {
+    if (email) {
+      return Response.json({
+        success: true,
+        data: email,
+      });
+    } else {
+      return Response.json({
+        success: false,
+        message: "Could not find email",
+      });
+    }
+  } catch (err) {
+    console.log(err);
     return Response.json({
       success: false,
       message: "Could not find email",

@@ -93,6 +93,7 @@ export async function PUT(request: Request) {
         });
       }
     } catch (err) {
+      console.log(err);
       return Response.json({
         success: false,
         message: (err as any).message,
@@ -116,19 +117,27 @@ export async function GET() {
   );
 
   if (inbox) {
-    const emails = await mailslurp.getEmails(inbox.id, {
-      limit: 100,
-    });
-
-    if (Array.isArray(emails)) {
-      return Response.json({
-        success: true,
-        data: emails,
+    try {
+      const emails = await mailslurp.getEmails(inbox.id, {
+        limit: 100,
       });
-    } else {
+
+      if (Array.isArray(emails)) {
+        return Response.json({
+          success: true,
+          data: emails,
+        });
+      } else {
+        return Response.json({
+          success: false,
+          message: "Invalid response",
+        });
+      }
+    } catch (err) {
+      console.log(err);
       return Response.json({
         success: false,
-        message: "Invalid response",
+        message: "Could not find inbox",
       });
     }
   } else {

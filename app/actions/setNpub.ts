@@ -1,7 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { redirect } from 'next/navigation'
+import { redirect } from "next/navigation";
 
 export default async function setNpub(formData: FormData) {
   const npub = formData.get("npub");
@@ -10,5 +10,5 @@ export default async function setNpub(formData: FormData) {
     cookies().set("npub", npub as string);
   }
 
-  redirect("/")
+  redirect("/");
 }

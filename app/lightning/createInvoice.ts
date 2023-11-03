@@ -61,6 +61,7 @@ export default async function createInvoice(
   }).then((r) => r.json());
 
   if (res.error) {
+    console.log("Error", res.error);
     return createInvoice(args, true);
   }
 

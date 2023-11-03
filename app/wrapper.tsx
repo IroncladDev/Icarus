@@ -5,9 +5,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Toaster } from "@/components/ui/toaster";
 import NDK, { NDKNip07Signer } from "@nostr-dev-kit/ndk";
 import { useEffect, useRef, useState } from "react";
+import setNpub from "./actions/setNpub";
 import "./globals.css";
 import { NostrNdkContext } from "./state";
-import setNpub from './actions/setNpub';
 
 const RELAYS = ["wss://relay.snort.social", "wss://nos.lol"];
 

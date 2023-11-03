@@ -1,10 +1,10 @@
-import WeblnNostrWrapper from "./wrapper";
 import { kv } from "@vercel/kv";
 import { InboxDto } from "mailslurp-client";
 import { cookies } from "next/headers";
 import CreateEmail from "./email/create";
 import EmailInbox from "./email/inbox";
 import { mailslurp } from "./email/route";
+import WeblnNostrWrapper from "./wrapper";
 
 export default async function Index() {
   const npub = cookies().get("npub");
@@ -26,11 +26,13 @@ export default async function Index() {
 
   return (
     <WeblnNostrWrapper>
-      {npub ? <div className="flex flex-row justify-center grow">
-        <div className="flex flex-col gap-4 max-w-sm grow justify-center">
-          {inbox ? <EmailInbox inbox={inbox} /> : <CreateEmail />}
+      {npub ? (
+        <div className="flex flex-row justify-center grow">
+          <div className="flex flex-col gap-4 max-w-sm grow justify-center">
+            {inbox ? <EmailInbox inbox={inbox} /> : <CreateEmail />}
+          </div>
         </div>
-      </div> : null}
+      ) : null}
     </WeblnNostrWrapper>
   );
 }

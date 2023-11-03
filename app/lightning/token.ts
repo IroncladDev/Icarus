@@ -1,8 +1,9 @@
 import { kv } from "@vercel/kv";
 
 function generateAuthorization() {
-  const credentials = `${process.env.AB_CLIENT_ID}:${process.env.AB_CLIENT_SECRET}`;
-  const encodedCredentials = Buffer.from(credentials).toString("base64");
+  const encodedCredentials = Buffer.from(
+    `${process.env.AB_CLIENT_ID}:${process.env.AB_CLIENT_SECRET}`,
+  ).toString("base64");
   return `Basic ${encodedCredentials}`;
 }
 
